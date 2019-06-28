@@ -13,8 +13,8 @@ const TextBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-width: 400px;
-  max-width: 600px;
+  min-width: 800px;
+  max-width: 800px;
   height: 60px;
 `;
 
