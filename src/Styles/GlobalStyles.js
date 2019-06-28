@@ -2,11 +2,16 @@ import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
 
 export default createGlobalStyle`
+    @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap');
     ${reset};
     * {
         box-sizing:border-box;
     }
     body {
+        position:absolute;
+        width:100%;
+        height:100%;
+        font-family: "Source Sans Pro", sans-serif;;
         background-color: ${props => props.theme.bgColor};
         color:${props => props.theme.blackColor};
     } 
