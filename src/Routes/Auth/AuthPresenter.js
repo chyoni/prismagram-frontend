@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
-import Input from "../Components/Input";
-import Button from "../Components/Button";
-import useInput from "../Hooks/useInput";
+import Input from "../../Components/Input";
+import Button from "../../Components/Button";
 
 const Wrapper = styled.div`
   min-height: 92vh;
@@ -17,7 +16,6 @@ const Box = styled.div`
   justify-content: center;
   ${props => props.theme.whiteBox}
   max-width:350px;
-  height: 410px;
   margin-bottom: 15px;
 `;
 
@@ -44,6 +42,7 @@ const Link = styled.span`
 
 const Form = styled(Box)`
   padding: 40px;
+  width: 350px;
   padding-bottom: 30px;
   margin-bottom: 15px;
   form {
@@ -65,53 +64,59 @@ const Form = styled(Box)`
   }
 `;
 
-export default () => {
-  const [action, setAction] = useState("login");
-  const loginUsername = useInput("");
-  const loginPassword = useInput("");
-  const signupUsername = useInput("");
-  const signupPassword = useInput("");
-  const firstName = useInput("");
-  const lastName = useInput("");
-  const email = useInput("");
-
+export default ({
+  action,
+  setAction,
+  loginEmail,
+  username,
+  firstName,
+  lastName,
+  email,
+  secret,
+  onSubmit
+}) => {
   return (
     <Wrapper>
       <Form>
-        {action === "login" ? (
-          <form>
-            <Input placeholder={"아이디 또는 이메일"} {...loginUsername} />
-            <Input
-              placeholder={"요청받은 시크릿 키"}
-              {...loginPassword}
-              type="password"
-            />
-            <Button text={"로그인"} />
+        {action === "login" && (
+          <form onSubmit={onSubmit}>
+            <Input placeholder={"이메일(Email)"} {...loginEmail} type="email" />
+            <Button text={"시크릿 키 요청"} />
           </form>
-        ) : (
-          <form>
-            <Input placeholder={"아이디(Username)"} {...signupUsername} />
+        )}{" "}
+        {action === "signup" && (
+          <form onSubmit={onSubmit}>
+            <Input placeholder={"아이디(Username)"} {...username} />
             <Input placeholder={"성(first Name)"} {...firstName} />
             <Input placeholder={"이름(last Name)"} {...lastName} />
             <Input placeholder={"이메일(Email)"} {...email} type="email" />
-            <Input
-              placeholder={"비밀번호(Password)"}
-              {...signupPassword}
-              type="password"
-            />
             <Button text={"회원가입"} />
           </form>
         )}
+        {action === "confirm" && (
+          <form onSubmit={onSubmit}>
+            <Input
+              placeholder={"시크릿 키를 입력하세요"}
+              required
+              {...secret}
+            />
+            <Button text={"로그인"} state={"confirm"} />
+          </form>
+        )}
       </Form>
-      {action === "login" ? (
+      {action !== "confirm" && (
         <ToggleBox>
-          <PlainText>계정이 없으신가요?</PlainText>
-          <Link onClick={() => setAction("signup")}>회원가입</Link>
-        </ToggleBox>
-      ) : (
-        <ToggleBox>
-          <PlainText>계정이 있으신가요?</PlainText>
-          <Link onClick={() => setAction("login")}>로그인</Link>
+          {action === "login" ? (
+            <>
+              <PlainText>계정이 없으신가요?</PlainText>
+              <Link onClick={() => setAction("signup")}>회원가입</Link>
+            </>
+          ) : (
+            <>
+              <PlainText>계정이 있으신가요?</PlainText>
+              <Link onClick={() => setAction("login")}>로그인</Link>
+            </>
+          )}
         </ToggleBox>
       )}
     </Wrapper>

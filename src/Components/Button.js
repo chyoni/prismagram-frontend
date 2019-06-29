@@ -2,10 +2,13 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
+const RED_BUTTON = "#e84118";
+
 const Container = styled.button`
   width: 100%;
   padding: 7px 0; /*상하 좌우*/
-  background-color: ${props => props.theme.blueColor};
+  background-color: ${props =>
+    props.state === "confirm" ? RED_BUTTON : props => props.theme.blueColor};
   border-radius: ${props => props.theme.borderRadius};
   border: 0;
   color: white;
@@ -16,10 +19,13 @@ const Container = styled.button`
   cursor: pointer;
 `;
 
-const Button = ({ text }) => <Container>{text}</Container>;
+const Button = ({ text, state = "" }) => (
+  <Container state={state}>{text}</Container>
+);
 
 Button.propTypes = {
-  text: PropTypes.string.isRequired
+  text: PropTypes.string.isRequired,
+  state: PropTypes.string
 };
 
 export default Button;

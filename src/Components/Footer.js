@@ -36,7 +36,12 @@ export default () => {
     <Wrapper>
       <TextBox>
         <PlainBox>
-          <Text identify="plain">wo._.n😁</Text>
+          <Text identify="plain">
+            wo._.n
+            <span role="img" aria-label="happy">
+              😁
+            </span>
+          </Text>
         </PlainBox>
         <ProjectBox>
           <Text identify="project">PRISMAGRAM</Text>
