@@ -1,12 +1,18 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { HashRouter as Router, Route, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import Feed from "../Routes/Feed";
 import Auth from "../Routes/Auth";
+import Explore from "../Routes/Explore";
+import Profile from "../Routes/Profile";
+import Search from "../Routes/Search";
 
 const LoggedInRoutes = () => (
   <>
     <Route exact path="/" component={Feed} />
+    <Route exact path="/explore" component={Explore} />
+    <Route exact path="/search" component={Search} />
+    <Route exact path="/:username" component={Profile} />
   </>
 );
 
@@ -18,9 +24,7 @@ const LoggedOutRoutes = () => (
 
 const AppRouter = ({ isLoggedIn }) => {
   return (
-    <Router>
-      <Switch>{isLoggedIn ? <LoggedInRoutes /> : <LoggedOutRoutes />}</Switch>
-    </Router>
+    <Switch>{isLoggedIn ? <LoggedInRoutes /> : <LoggedOutRoutes />}</Switch>
   );
 };
 

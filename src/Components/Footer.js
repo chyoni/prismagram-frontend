@@ -13,8 +13,8 @@ const TextBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-width: 800px;
-  max-width: 800px;
+  width: 100%;
+  max-width: ${props => props.theme.maxWidth};
   height: 60px;
 `;
 
@@ -37,14 +37,17 @@ export default () => {
       <TextBox>
         <PlainBox>
           <Text identify="plain">
+            <span role="img" aria-label="happy">
+              💗
+            </span>
             wo._.n
             <span role="img" aria-label="happy">
-              😁
+              💗
             </span>
           </Text>
         </PlainBox>
         <ProjectBox>
-          <Text identify="project">PRISMAGRAM</Text>
+          <Text identify="project">WONSTARGRAM</Text>
         </ProjectBox>
       </TextBox>
     </Wrapper>

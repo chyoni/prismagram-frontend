@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 const Container = styled.input`
   width: 250px;
-  height: 37px;
+  height: ${props => (props.bigSize ? "37px" : "28px")};
   border-radius: ${props => props.theme.borderRadius};
   background-color: ${props => props.theme.bgColor};
   border: ${props => props.theme.boxBorder};
@@ -15,6 +15,7 @@ const Input = ({
   placeholder,
   required = true,
   value,
+  bigSize = false,
   onChange,
   type = "text"
 }) => (
@@ -24,6 +25,7 @@ const Input = ({
     value={value}
     onChange={onChange}
     type={type}
+    bigSize={bigSize}
   />
 );
 
@@ -32,7 +34,8 @@ Input.propTypes = {
   required: PropTypes.bool,
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
-  type: PropTypes.string
+  type: PropTypes.string,
+  bigSize: PropTypes.bool
 };
 
 export default Input;
