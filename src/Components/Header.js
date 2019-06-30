@@ -64,7 +64,6 @@ const SearchBox = styled.div`
 
 const EtcLogoBox = styled.div`
   display: flex;
-  justify-content: space-evenly;
 `;
 
 const ExploreLogo = styled.div`
@@ -118,11 +117,11 @@ const Header = withRouter(({ history, isLoggedIn }) => {
           </form>
         </SearchBox>
         <EtcLogoBox>
-          <Link to={"/explore"}>
-            <ExploreLogo>
+          <ExploreLogo>
+            <Link to={"/explore"}>
               <Explore />
-            </ExploreLogo>
-          </Link>
+            </Link>
+          </ExploreLogo>
           <HeartLogo>
             <Heart />
           </HeartLogo>
@@ -131,11 +130,11 @@ const Header = withRouter(({ history, isLoggedIn }) => {
               <User />
             </UserLogo>
           ) : (
-            <Link to={`/${me.username}`}>
-              <UserLogo>
+            <UserLogo>
+              <Link to={`/${me.username}`}>
                 <User />
-              </UserLogo>
-            </Link>
+              </Link>
+            </UserLogo>
           )}
         </EtcLogoBox>
       </HeaderInSide>
