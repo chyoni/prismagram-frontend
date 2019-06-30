@@ -6,6 +6,7 @@ import { Logo, Explore, Heart, User } from "./Icons";
 import { Link, withRouter } from "react-router-dom";
 import Input from "./Input";
 import useInput from "../Hooks/useInput";
+import { useQuery } from "react-apollo-hooks";
 
 const HeaderBox = styled.div`
   display: flex;
@@ -81,7 +82,7 @@ const UserLogo = styled.div`
 `;
 
 const ME = gql`
-  query {
+  {
     me {
       username
     }
@@ -90,6 +91,10 @@ const ME = gql`
 
 const Header = withRouter(({ history, isLoggedIn }) => {
   const search = useInput("");
+  const {
+    data: { me }
+  } = useQuery(ME);
+  console.log(me);
   const onSearchSubmit = e => {
     e.preventDefault();
     history.push(`/search?term=${search.value}`);
@@ -113,15 +118,25 @@ const Header = withRouter(({ history, isLoggedIn }) => {
           </form>
         </SearchBox>
         <EtcLogoBox>
-          <ExploreLogo>
-            <Explore />
-          </ExploreLogo>
+          <Link to={"/explore"}>
+            <ExploreLogo>
+              <Explore />
+            </ExploreLogo>
+          </Link>
           <HeartLogo>
             <Heart />
           </HeartLogo>
-          <UserLogo>
-            <User />
-          </UserLogo>
+          {!me ? (
+            <UserLogo>
+              <User />
+            </UserLogo>
+          ) : (
+            <Link to={`/${me.username}`}>
+              <UserLogo>
+                <User />
+              </UserLogo>
+            </Link>
+          )}
         </EtcLogoBox>
       </HeaderInSide>
     </HeaderBox>
