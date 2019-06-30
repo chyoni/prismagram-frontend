@@ -1,8 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import { gql } from "apollo-boost";
 import { Logo, Explore, Heart, User } from "./Icons";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import Input from "./Input";
 import useInput from "../Hooks/useInput";
 
@@ -79,10 +80,19 @@ const UserLogo = styled.div`
   cursor: pointer;
 `;
 
-const Header = ({ isLoggedIn }) => {
+const ME = gql`
+  query {
+    me {
+      username
+    }
+  }
+`;
+
+const Header = withRouter(({ history, isLoggedIn }) => {
   const search = useInput("");
   const onSearchSubmit = e => {
     e.preventDefault();
+    history.push(`/search?term=${search.value}`);
   };
 
   return isLoggedIn ? (
@@ -116,7 +126,8 @@ const Header = ({ isLoggedIn }) => {
       </HeaderInSide>
     </HeaderBox>
   ) : null;
-};
+});
+
 Header.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired
 };

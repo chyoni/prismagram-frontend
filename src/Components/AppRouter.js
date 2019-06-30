@@ -8,24 +8,22 @@ import Profile from "../Routes/Profile";
 import Search from "../Routes/Search";
 
 const LoggedInRoutes = () => (
-  <>
+  <Switch>
     <Route exact path="/" component={Feed} />
     <Route exact path="/explore" component={Explore} />
     <Route exact path="/search" component={Search} />
     <Route exact path="/:username" component={Profile} />
-  </>
+  </Switch>
 );
 
 const LoggedOutRoutes = () => (
-  <>
+  <Switch>
     <Route exact path="/" component={Auth} />
-  </>
+  </Switch>
 );
 
 const AppRouter = ({ isLoggedIn }) => {
-  return (
-    <Switch>{isLoggedIn ? <LoggedInRoutes /> : <LoggedOutRoutes />}</Switch>
-  );
+  return isLoggedIn ? <LoggedInRoutes /> : <LoggedOutRoutes />;
 };
 
 AppRouter.propTypes = {
