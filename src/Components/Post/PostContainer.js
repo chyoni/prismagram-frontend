@@ -15,7 +15,26 @@ const PostContainer = ({
   createdTime,
   user
 }) => {
-  return <PostPresenter />;
+  const [isLikedState, setIsLiked] = useState(isLiked);
+  const [likeCountState, setLikeCount] = useState(likeCount);
+  const comment = useInput("");
+  return (
+    <PostPresenter
+      id={id}
+      caption={caption}
+      location={location}
+      files={files}
+      comments={comments}
+      likes={likes}
+      isLikedState={isLikedState}
+      likeCountState={likeCountState}
+      setIsLiked={setIsLiked}
+      setLikeCount={setLikeCount}
+      newComment={comment}
+      createdTime={createdTime}
+      user={user}
+    />
+  );
 };
 
 PostContainer.propTypes = {

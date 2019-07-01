@@ -24,6 +24,19 @@ const HeaderInSide = styled.div`
   max-width: 960px;
 `;
 
+const LogoLink = styled(Link)`
+  div &:active {
+    div {
+      svg {
+        fill: ${props => props.theme.lightGreyColor};
+      }
+      span {
+        color: ${props => props.theme.lightGreyColor};
+      }
+    }
+  }
+`;
+
 const HomeLogoBox = styled.div`
   display: flex;
 `;
@@ -66,6 +79,14 @@ const EtcLogoBox = styled.div`
   display: flex;
 `;
 
+const ExploreLink = styled(Link)`
+  svg {
+    &:active {
+      fill: ${props => props.theme.lightGreyColor};
+    }
+  }
+`;
+
 const ExploreLogo = styled.div`
   cursor: pointer;
   margin-right: 35px;
@@ -74,6 +95,14 @@ const ExploreLogo = styled.div`
 const HeartLogo = styled.div`
   cursor: pointer;
   margin-right: 35px;
+`;
+
+const UserLink = styled(Link)`
+  svg {
+    &:active {
+      fill: ${props => props.theme.lightGreyColor};
+    }
+  }
 `;
 
 const UserLogo = styled.div`
@@ -102,7 +131,7 @@ const Header = withRouter(({ history, isLoggedIn }) => {
   return isLoggedIn ? (
     <HeaderBox>
       <HeaderInSide>
-        <Link to={"/"}>
+        <LogoLink to={"/"}>
           <HomeLogoBox>
             <HomeLogo>
               <Logo />
@@ -110,7 +139,7 @@ const Header = withRouter(({ history, isLoggedIn }) => {
             <DivideLine />
             <Wonstargram>Wonstargram</Wonstargram>
           </HomeLogoBox>
-        </Link>
+        </LogoLink>
         <SearchBox>
           <form onSubmit={onSearchSubmit}>
             <Input {...search} bigSize={false} placeholder={"검색"} />
@@ -118,9 +147,9 @@ const Header = withRouter(({ history, isLoggedIn }) => {
         </SearchBox>
         <EtcLogoBox>
           <ExploreLogo>
-            <Link to={"/explore"}>
+            <ExploreLink to={"/explore"}>
               <Explore />
-            </Link>
+            </ExploreLink>
           </ExploreLogo>
           <HeartLogo>
             <Heart />
@@ -131,9 +160,9 @@ const Header = withRouter(({ history, isLoggedIn }) => {
             </UserLogo>
           ) : (
             <UserLogo>
-              <Link to={`/${me.username}`}>
+              <UserLink to={`/${me.username}`}>
                 <User />
-              </Link>
+              </UserLink>
             </UserLogo>
           )}
         </EtcLogoBox>

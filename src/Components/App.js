@@ -19,7 +19,7 @@ const QUERY = gql`
 
 const Wrapper = styled.div`
   margin: 0 auto;
-  margin-top: 50px;
+  margin-top: 60px;
   max-width: ${props => props.theme.maxWidth};
   width: 100%;
 `;

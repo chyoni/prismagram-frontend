@@ -25,6 +25,7 @@ const FEED_QUERY = gql`
       comments {
         id
         text
+        createdAt
         user {
           id
           avatar
