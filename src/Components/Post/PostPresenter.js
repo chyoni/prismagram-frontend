@@ -288,7 +288,11 @@ export default props => {
                 <ToggleSlide>
                   {props.currentItem !== 0 ? (
                     <PrevButton>
-                      <PrevAction onClick={() => props.nextSlideFn()}>
+                      <PrevAction
+                        onClick={() =>
+                          props.setCurrentItem(props.currentItem - 1)
+                        }
+                      >
                         <Prev />
                       </PrevAction>
                     </PrevButton>
@@ -297,7 +301,11 @@ export default props => {
                   )}
                   {props.currentItem + 1 !== filesLength ? (
                     <NextButton>
-                      <NextAction onClick={() => props.nextSlideFn()}>
+                      <NextAction
+                        onClick={() =>
+                          props.setCurrentItem(props.currentItem + 1)
+                        }
+                      >
                         <Next />
                       </NextAction>
                     </NextButton>
