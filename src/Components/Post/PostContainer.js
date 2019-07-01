@@ -17,7 +17,16 @@ const PostContainer = ({
 }) => {
   const [isLikedState, setIsLiked] = useState(isLiked);
   const [likeCountState, setLikeCount] = useState(likeCount);
+  const [currentItem, setCurrentItem] = useState(0);
   const comment = useInput("");
+  const slide = () => {
+    const totalFiles = files.length;
+    if (currentItem === totalFiles - 1) {
+      setCurrentItem(0);
+    } else {
+      setCurrentItem(currentItem + 1);
+    }
+  };
   return (
     <PostPresenter
       id={id}
@@ -33,6 +42,8 @@ const PostContainer = ({
       newComment={comment}
       createdTime={createdTime}
       user={user}
+      currentItem={currentItem}
+      nextSlideFn={slide}
     />
   );
 };

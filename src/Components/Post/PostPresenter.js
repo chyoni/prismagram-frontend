@@ -3,8 +3,9 @@ import Avatar from "../Avatar";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import TextareaAutosize from "react-autosize-textarea";
-import { Heart, Chat, Share, BookMark, Menu } from "../Icons";
+import { Heart, Chat, Share, BookMark, Menu, Prev, Next } from "../Icons";
 import Comments from "../Comments";
+import Indicator from "../Indicator";
 
 const PostWrapper = styled.div`
   display: flex;
@@ -56,9 +57,74 @@ const OptionAction = styled.div`
 
 const PostFileColumn = styled.div`
   position: relative;
-  left: 0;
-  top: 0;
+  padding-bottom: 100%;
+  display: flex;
+  z-index: 1;
+  flex-direction: column;
+  align-items: stretch;
+  flex-shrink: 0;
+`;
+
+const PostFile = styled.div`
+  max-width: 100%;
   width: 100%;
+  height: 600px;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  top: 0;
+  background-image: url(${props => props.src});
+  background-size: cover;
+  background-position: center;
+  opacity: ${props => (props.showing ? 1 : 0)};
+  transition: opacity 0.5s linear;
+`;
+
+const ToggleSlide = styled.div`
+  width: 100%;
+  display: flex;
+  margin-top: 290px;
+  margin-bottom: 230px;
+`;
+
+const PrevButton = styled.div`
+  z-index: 2;
+  width: 50%;
+  display: flex;
+  justify-content: flex-start;
+`;
+
+const PrevAction = styled.div`
+  cursor: pointer;
+  padding-left: 10px;
+  svg {
+    fill: white;
+  }
+`;
+
+const NextButton = styled.div`
+  z-index: 2;
+  width: 50%;
+  display: flex;
+  justify-content: flex-end;
+`;
+
+const NextAction = styled.div`
+  cursor: pointer;
+  padding-right: 10px;
+  svg {
+    fill: white;
+  }
+`;
+
+const SlideIndicator = styled.div`
+  width: 100%;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const PostBottomColumn = styled.div`
@@ -187,6 +253,7 @@ const Textarea = styled(TextareaAutosize)`
 
 export default props => {
   console.log(props);
+  const filesLength = props.files.length;
   return (
     <PostWrapper>
       <PostCreatorColumn>
@@ -210,15 +277,43 @@ export default props => {
         </HeaderOption>
       </PostCreatorColumn>
       <PostFileColumn>
-        <img
-          width={612}
-          src={
-            props.files.length > 1
-              ? props.files[0].url
-              : require("../../images/noPhoto.jpg")
-          }
-          alt={"이미지"}
-        />
+        {props.files &&
+          props.files.map((file, index) => (
+            <PostFile
+              key={file.id}
+              src={file.url}
+              showing={index === props.currentItem}
+            >
+              {filesLength > 1 && (
+                <ToggleSlide>
+                  {props.currentItem !== 0 ? (
+                    <PrevButton>
+                      <PrevAction onClick={() => props.nextSlideFn()}>
+                        <Prev />
+                      </PrevAction>
+                    </PrevButton>
+                  ) : (
+                    <PrevButton />
+                  )}
+                  {props.currentItem + 1 !== filesLength ? (
+                    <NextButton>
+                      <NextAction onClick={() => props.nextSlideFn()}>
+                        <Next />
+                      </NextAction>
+                    </NextButton>
+                  ) : (
+                    <NextButton />
+                  )}
+                </ToggleSlide>
+              )}
+              <SlideIndicator>
+                <Indicator
+                  countArray={props.files}
+                  currentItem={props.currentItem}
+                />
+              </SlideIndicator>
+            </PostFile>
+          ))}
       </PostFileColumn>
       <PostBottomColumn>
         <BottomActionSection>
