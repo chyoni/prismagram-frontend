@@ -9,6 +9,9 @@ import { useQuery } from "react-apollo-hooks";
 import { ME } from "../SharedQueries";
 
 const HeaderBox = styled.div`
+  z-index: 1000;
+  position: sticky;
+  top: 0;
   display: flex;
   justify-content: center;
   align-items: center;
