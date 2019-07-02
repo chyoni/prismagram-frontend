@@ -1,12 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import { gql } from "apollo-boost";
 import { Logo, Explore, Heart, User } from "./Icons";
 import { Link, withRouter } from "react-router-dom";
 import Input from "./Input";
 import useInput from "../Hooks/useInput";
 import { useQuery } from "react-apollo-hooks";
+import { ME } from "../SharedQueries";
 
 const HeaderBox = styled.div`
   display: flex;
@@ -109,14 +109,6 @@ const UserLogo = styled.div`
   cursor: pointer;
 `;
 
-const ME = gql`
-  {
-    me {
-      username
-    }
-  }
-`;
-
 const Header = withRouter(({ history, isLoggedIn }) => {
   const search = useInput("");
   const {
@@ -142,7 +134,12 @@ const Header = withRouter(({ history, isLoggedIn }) => {
         </LogoLink>
         <SearchBox>
           <form onSubmit={onSearchSubmit}>
-            <Input {...search} bigSize={false} placeholder={"검색"} />
+            <Input
+              value={search.value}
+              onChange={search.onChange}
+              bigSize={false}
+              placeholder={"검색"}
+            />
           </form>
         </SearchBox>
         <EtcLogoBox>

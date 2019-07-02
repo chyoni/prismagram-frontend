@@ -366,10 +366,16 @@ export default props => {
         </BottomCaptionSection>
         <BottomCommentSection>
           <Comments commentsArray={props.comments} />
+          <Comments commentsArray={props.selfComments} />
         </BottomCommentSection>
         <BottomCreateTimeSection>{props.createdTime}</BottomCreateTimeSection>
         <BottomAddCommentSection>
-          <Textarea placeholder={"댓글 달기..."} {...props.newComment} />
+          <Textarea
+            placeholder={"댓글 달기..."}
+            onKeyDown={props.onKeyDown}
+            value={props.newComment.value}
+            onChange={props.newComment.onChange}
+          />
         </BottomAddCommentSection>
       </PostBottomColumn>
     </PostWrapper>

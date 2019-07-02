@@ -11,6 +11,7 @@ const CommentContainer = styled.div`
 
 const CommentWrapper = styled.div`
   width: 100%;
+  margin-bottom: 3px;
 `;
 
 const Username = styled.span`

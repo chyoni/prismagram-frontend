@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import useInput from "../../Hooks/useInput";
 import PostPresenter from "./PostPresenter";
 import { useMutation } from "react-apollo-hooks";
-import { TOGGLE_LIKE } from "./PostQueries";
+import { TOGGLE_LIKE, ADD_COMMENT } from "./PostQueries";
 import { toast } from "react-toastify";
 
 const PostContainer = ({
@@ -21,9 +21,13 @@ const PostContainer = ({
   const [isLikedState, setIsLiked] = useState(isLiked);
   const [likeCountState, setLikeCount] = useState(likeCount);
   const [currentItem, setCurrentItem] = useState(0);
+  const [selfComments, setSelfComments] = useState([]);
   const comment = useInput("");
   const toggleLikeMutation = useMutation(TOGGLE_LIKE, {
     variables: { postId: id }
+  });
+  const addCommentMutation = useMutation(ADD_COMMENT, {
+    variables: { postId: id, text: comment.value }
   });
 
   const toggleLike = () => {
@@ -39,6 +43,23 @@ const PostContainer = ({
     } catch (e) {
       setIsLiked(!isLikedState);
       toast.error("일시적 오류입니다😥");
+    }
+  };
+
+  const onKeyDown = async e => {
+    const { keyCode } = e;
+    if (keyCode === 13) {
+      e.preventDefault();
+      try {
+        comment.setValue("");
+        const {
+          data: { addComment }
+        } = await addCommentMutation();
+        console.log(addComment);
+        setSelfComments([...selfComments, addComment]);
+      } catch (e) {
+        toast.error("일시적 오류입니다😥");
+      }
     }
   };
 
@@ -60,6 +81,8 @@ const PostContainer = ({
       currentItem={currentItem}
       setCurrentItem={setCurrentItem}
       toggleLike={toggleLike}
+      onKeyDown={onKeyDown}
+      selfComments={selfComments}
     />
   );
 };

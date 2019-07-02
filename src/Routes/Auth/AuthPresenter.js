@@ -80,16 +80,38 @@ export default ({
       <Form>
         {action === "login" && (
           <form onSubmit={onSubmit}>
-            <Input placeholder={"이메일(Email)"} {...loginEmail} type="email" />
+            <Input
+              placeholder={"이메일(Email)"}
+              value={loginEmail.value}
+              onChange={loginEmail.onChange}
+              type="email"
+            />
             <Button text={"시크릿 키 요청"} />
           </form>
         )}{" "}
         {action === "signup" && (
           <form onSubmit={onSubmit}>
-            <Input placeholder={"아이디(Username)"} {...username} />
-            <Input placeholder={"성(first Name)"} {...firstName} />
-            <Input placeholder={"이름(last Name)"} {...lastName} />
-            <Input placeholder={"이메일(Email)"} {...email} type="email" />
+            <Input
+              placeholder={"아이디(Username)"}
+              value={username.value}
+              onChange={username.onChange}
+            />
+            <Input
+              placeholder={"성(first Name)"}
+              value={firstName.value}
+              onChange={firstName.onChange}
+            />
+            <Input
+              placeholder={"이름(last Name)"}
+              value={lastName.value}
+              onChange={lastName.onChange}
+            />
+            <Input
+              placeholder={"이메일(Email)"}
+              value={email.value}
+              onChange={email.onChange}
+              type="email"
+            />
             <Button text={"회원가입"} />
           </form>
         )}
@@ -98,7 +120,8 @@ export default ({
             <Input
               placeholder={"시크릿 키를 입력하세요"}
               required
-              {...secret}
+              value={secret.value}
+              onChange={secret.onChange}
             />
             <Button text={"로그인"} state={"confirm"} />
           </form>

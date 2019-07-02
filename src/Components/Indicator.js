@@ -16,7 +16,6 @@ const Indicator = ({ countArray, currentItem }) => {
 };
 
 const Circle = props => {
-  console.log(props);
   return (
     <Container showing={props.showing}>
       <IndicatorCircle />
