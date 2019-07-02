@@ -11,10 +11,11 @@ const Image = styled.img`
   border: 1px solid ${props => props.theme.lightGreyColor};
 `;
 
-const Avatar = ({ big = "no", username, src }) => {
+const Avatar = ({ big = "no", username, src, className }) => {
   return (
     <Link to={`/${username}`}>
       <Image
+        className={className}
         big={big}
         src={src || require("../images/noPhoto.jpg")}
         alt={`${username}님의 프로필 사진`}

@@ -64,7 +64,7 @@ const SearchPresenter = ({ searchTerm, loading, data }) => {
           <SearchFoundBox>
             <SearchUserCard>
               <LabelText>User</LabelText>
-              <UserCard userArray={data.searchUser} />
+              <UserCard userArray={data.searchUser} whiteCard={false} />
             </SearchUserCard>
             <SearchPostCard>
               <LabelText>Post</LabelText>
