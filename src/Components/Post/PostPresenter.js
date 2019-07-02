@@ -3,7 +3,16 @@ import Avatar from "../Avatar";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import TextareaAutosize from "react-autosize-textarea";
-import { Heart, Chat, Share, BookMark, Menu, Prev, Next } from "../Icons";
+import {
+  Heart,
+  Chat,
+  Share,
+  BookMark,
+  Menu,
+  Prev,
+  Next,
+  HeartFull
+} from "../Icons";
 import Comments from "../Comments";
 import Indicator from "../Indicator";
 
@@ -12,6 +21,7 @@ const PostWrapper = styled.div`
   flex-direction: column;
   ${props => props.theme.whiteBox};
   width: 614px;
+  user-select: none; /*클릭하면 하이라이트되는 거 없애는것 */
   min-height: 600px;
   margin-bottom: 60px;
 `;
@@ -252,7 +262,6 @@ const Textarea = styled(TextareaAutosize)`
 `;
 
 export default props => {
-  console.log(props);
   const filesLength = props.files.length;
   return (
     <PostWrapper>
@@ -326,8 +335,8 @@ export default props => {
       <PostBottomColumn>
         <BottomActionSection>
           <HeartButton>
-            <HeartAction>
-              <Heart />
+            <HeartAction onClick={props.toggleLike}>
+              {props.isLikedState ? <HeartFull /> : <Heart />}
             </HeartAction>
           </HeartButton>
           <ChatButton>

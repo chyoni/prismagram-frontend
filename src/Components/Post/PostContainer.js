@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import useInput from "../../Hooks/useInput";
 import PostPresenter from "./PostPresenter";
+import { useMutation } from "react-apollo-hooks";
+import { TOGGLE_LIKE } from "./PostQueries";
+import { toast } from "react-toastify";
 
 const PostContainer = ({
   id,
@@ -19,14 +22,26 @@ const PostContainer = ({
   const [likeCountState, setLikeCount] = useState(likeCount);
   const [currentItem, setCurrentItem] = useState(0);
   const comment = useInput("");
-  // const slide = () => {
-  //   const totalFiles = files.length;
-  //   if (currentItem === totalFiles - 1) {
-  //     setCurrentItem(currentItem - 1);
-  //   } else {
-  //     setCurrentItem(currentItem + 1);
-  //   }
-  // };
+  const toggleLikeMutation = useMutation(TOGGLE_LIKE, {
+    variables: { postId: id }
+  });
+
+  const toggleLike = () => {
+    if (isLikedState === true) {
+      setIsLiked(false);
+      setLikeCount(likeCountState - 1);
+    } else {
+      setIsLiked(true);
+      setLikeCount(likeCountState + 1);
+    }
+    try {
+      toggleLikeMutation();
+    } catch (e) {
+      setIsLiked(!isLikedState);
+      toast.error("일시적 오류입니다😥");
+    }
+  };
+
   return (
     <PostPresenter
       id={id}
@@ -44,6 +59,7 @@ const PostContainer = ({
       user={user}
       currentItem={currentItem}
       setCurrentItem={setCurrentItem}
+      toggleLike={toggleLike}
     />
   );
 };
