@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Avatar from "./Avatar";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import Button from "./Button";
+import FollowButton from "./FollowButton";
 
 const GridOrNotContainer = styled.div`
   ${props =>
@@ -17,6 +17,7 @@ const Wrapper = styled.div`
   flex-direction: ${props => (props.whiteCard ? "column" : "row")};
   ${props => (props.whiteCard ? props.theme.whiteBox : "")};
   width: 100%;
+  margin-bottom: ${props => (props.whiteCard ? "" : "10px")};
   padding-left: ${props => (props.whiteCard ? "" : "30px")};
   padding-top: ${props => (props.whiteCard ? "" : "15px")};
 `;
@@ -57,31 +58,26 @@ const Bio = styled.span`
   color: ${props => props.theme.lightGreyColor};
 `;
 
-const FollowButton = styled(Button)`
-  margin-top: ${props => (props.whiteCard ? "5px" : "15px")};
-  width: 80px;
-  background-color: ${props =>
-    props.isFollowing ? "white" : props.theme.blueColor};
-  color: ${props => (props.isFollowing ? props.theme.blackColor : "white")};
-  border: ${props =>
-    props.isFollowing ? `1px solid ${props.theme.lightGreyColor}` : ""};
-`;
-
-export default ({ userArray, whiteCard = true }) =>
-  userArray.map(user => {
-    return (
-      <UserCard
-        key={user.id}
-        id={user.id}
-        username={user.username}
-        bio={user.bio}
-        isFollowing={user.isFollowing}
-        isSelf={user.isSelf}
-        avatar={user.avatar}
-        whiteCard={whiteCard}
-      />
-    );
-  });
+export default ({ userArray, whiteCard = true }) => {
+  return (
+    <GridOrNotContainer whiteCard={whiteCard}>
+      {userArray.map(user => {
+        return (
+          <UserCard
+            key={user.id}
+            id={user.id}
+            username={user.username}
+            bio={user.bio}
+            isFollowing={user.isFollowing}
+            isSelf={user.isSelf}
+            avatar={user.avatar}
+            whiteCard={whiteCard}
+          />
+        );
+      })}
+    </GridOrNotContainer>
+  );
+};
 
 const UserCard = ({
   id,
@@ -93,37 +89,35 @@ const UserCard = ({
   whiteCard
 }) => {
   return (
-    <GridOrNotContainer whiteCard={whiteCard}>
-      <Wrapper whiteCard={whiteCard}>
-        <AvatarColumn whiteCard={whiteCard}>
-          <ExtendedAvatar
-            big={"yes"}
-            username={username}
-            src={avatar}
+    <Wrapper whiteCard={whiteCard}>
+      <AvatarColumn whiteCard={whiteCard}>
+        <ExtendedAvatar
+          big={"yes"}
+          username={username}
+          src={avatar}
+          whiteCard={whiteCard}
+        />
+      </AvatarColumn>
+      <InfoColumn whiteCard={whiteCard}>
+        <Username whiteCard={whiteCard}>
+          <Link to={`${username}`}>{username}</Link>
+        </Username>
+        {whiteCard ? (
+          ""
+        ) : (
+          <Bio>{bio === "" ? `${username} 님의 프로필` : bio}</Bio>
+        )}
+        {isSelf ? (
+          ""
+        ) : (
+          <FollowButton
+            id={id}
             whiteCard={whiteCard}
+            isFollowing={isFollowing}
           />
-        </AvatarColumn>
-        <InfoColumn whiteCard={whiteCard}>
-          <Username whiteCard={whiteCard}>
-            <Link to={`${username}`}>{username}</Link>
-          </Username>
-          {whiteCard ? (
-            ""
-          ) : (
-            <Bio>{bio === "" ? `${username} 님의 프로필` : bio}</Bio>
-          )}
-          {isSelf ? (
-            ""
-          ) : (
-            <FollowButton
-              isFollowing={isFollowing}
-              text={isFollowing ? "Unfollow" : "Follow"}
-              whiteCard={whiteCard}
-            />
-          )}
-        </InfoColumn>
-      </Wrapper>
-    </GridOrNotContainer>
+        )}
+      </InfoColumn>
+    </Wrapper>
   );
 };
 

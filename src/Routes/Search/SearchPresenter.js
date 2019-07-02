@@ -35,6 +35,7 @@ const LabelText = styled.span`
 
 const SearchUserCard = styled.div`
   min-height: 250px;
+  margin-bottom: 20px;
 `;
 
 const SearchPostCard = styled.div`
@@ -42,7 +43,6 @@ const SearchPostCard = styled.div`
 `;
 
 const SearchPresenter = ({ searchTerm, loading, data }) => {
-  console.log(loading, data.searchUser, data.searchPost);
   return (
     <SearchWrapper>
       {loading ? <Loader /> : null}

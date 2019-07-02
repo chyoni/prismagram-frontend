@@ -19,11 +19,13 @@ const Container = styled.button`
   cursor: pointer;
 `;
 
-const Button = ({ text, state = "", className, isFollowing }) => (
-  <Container className={className} state={state} isFollowing={isFollowing}>
-    {text}
-  </Container>
-);
+const Button = ({ text, state = "", className }) => {
+  return (
+    <Container className={className} state={state}>
+      {text}
+    </Container>
+  );
+};
 
 Button.propTypes = {
   text: PropTypes.string.isRequired,
