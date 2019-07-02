@@ -17,19 +17,22 @@ const Wrapper = styled.div`
   flex-direction: ${props => (props.whiteCard ? "column" : "row")};
   ${props => (props.whiteCard ? props.theme.whiteBox : "")};
   width: 100%;
-  align-items: ${props => (props.whiteCard ? "center" : "")};
-  justify-content: ${props => (props.whiteCard ? "center" : "")};
   padding-left: ${props => (props.whiteCard ? "" : "30px")};
   padding-top: ${props => (props.whiteCard ? "" : "15px")};
 `;
 
 const AvatarColumn = styled.div`
+  display: flex;
+  justify-content: ${props => (props.whiteCard ? "center" : "")};
+  width: ${props => (props.whiteCard ? "100%" : "")};
+  margin-top: ${props => (props.whiteCard ? "13px" : "")};
+  margin-bottom: ${props => (props.whiteCard ? "13px" : "")};
   margin-right: ${props => (props.whiteCard ? "" : "10px")};
 `;
 
 const ExtendedAvatar = styled(Avatar)`
-  width: ${props => (props.whiteCard ? "80px" : "150px")};
-  height: ${props => (props.whiteCard ? "80px" : "150px")};
+  width: ${props => (props.whiteCard ? "60px" : "150px")};
+  height: ${props => (props.whiteCard ? "60px" : "150px")};
 `;
 
 const InfoColumn = styled.div`
@@ -43,7 +46,7 @@ const InfoColumn = styled.div`
 `;
 
 const Username = styled.span`
-  font-size: ${props => (props.whiteCard ? "16px" : "35px")};
+  font-size: ${props => (props.whiteCard ? "14px" : "35px")};
   font-weight: 600;
   color: ${props => props.theme.blackColor};
   margin-bottom: 5px;
@@ -64,7 +67,7 @@ const FollowButton = styled(Button)`
     props.isFollowing ? `1px solid ${props.theme.lightGreyColor}` : ""};
 `;
 
-export default ({ userArray, whiteCard = false }) =>
+export default ({ userArray, whiteCard = true }) =>
   userArray.map(user => {
     return (
       <UserCard
