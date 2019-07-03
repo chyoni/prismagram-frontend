@@ -20,10 +20,11 @@ const FollowButtonPresenter = styled.button`
     props.isFollowed ? `1px solid ${props.theme.lightGreyColor}` : ""};
 `;
 
-export default ({ isFollowed, whiteCard, onClickButton }) => {
+export default ({ isFollowed, whiteCard, onClickButton, className }) => {
   return (
     <FollowButtonPresenter
       whiteCard={whiteCard}
+      className={className}
       onClick={onClickButton}
       isFollowed={isFollowed}
     >

@@ -82,9 +82,10 @@ const Count = styled.span`
 `;
 
 const SquarePost = ({ postArray }) => {
+  const updateCurrentArray = postArray.reverse();
   return (
     <GridContainer>
-      {postArray.map(post => {
+      {updateCurrentArray.map(post => {
         return (
           <MapToPost
             key={post.id}

@@ -47,8 +47,9 @@ const InfoColumn = styled.div`
 `;
 
 const Username = styled.span`
-  font-size: ${props => (props.whiteCard ? "14px" : "35px")};
-  font-weight: 600;
+  font-size: ${props => (props.whiteCard ? "14px" : "30px")};
+  font-weight: 500;
+  font-family: "Roboto", sans-serif;
   color: ${props => props.theme.blackColor};
   margin-bottom: 5px;
 `;

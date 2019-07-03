@@ -4,7 +4,7 @@ import { useMutation } from "react-apollo-hooks";
 import { FOLLOW, UNFOLLOW } from "./FollowButtonQueries";
 import { toast } from "react-toastify";
 
-const FollowButtonContainer = ({ id, whiteCard, isFollowing }) => {
+const FollowButtonContainer = ({ id, whiteCard, isFollowing, className }) => {
   const [isFollowingState, setIsFollowingState] = useState(isFollowing);
   const followMutation = useMutation(FOLLOW, { variables: { id } });
   const unfollowMutation = useMutation(UNFOLLOW, { variables: { id } });
@@ -32,6 +32,7 @@ const FollowButtonContainer = ({ id, whiteCard, isFollowing }) => {
       isFollowed={isFollowingState}
       onClickButton={onClickButton}
       whiteCard={whiteCard}
+      className={className}
     />
   );
 };

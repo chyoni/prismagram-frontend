@@ -4,6 +4,7 @@ import reset from "styled-reset";
 export default createGlobalStyle`
     @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap');
     @import url('https://fonts.googleapis.com/css?family=Pacifico&display=swap');
+    @import url('https://fonts.googleapis.com/css?family=Roboto:100&display=swap');
     ${reset};
     * {
         box-sizing:border-box;

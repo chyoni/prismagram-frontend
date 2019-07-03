@@ -11,8 +11,8 @@ const Image = styled.img`
   border: 1px solid ${props => props.theme.lightGreyColor};
 `;
 
-const Avatar = ({ big = "no", username, src, className }) => {
-  return (
+const Avatar = ({ big = "no", username, src, className, linking = true }) => {
+  return linking ? (
     <Link to={`/${username}`}>
       <Image
         className={className}
@@ -21,13 +21,21 @@ const Avatar = ({ big = "no", username, src, className }) => {
         alt={`${username}님의 프로필 사진`}
       />
     </Link>
+  ) : (
+    <Image
+      className={className}
+      big={big}
+      src={src || require("../images/noPhoto.jpg")}
+      alt={`${username}님의 프로필 사진`}
+    />
   );
 };
 
 Avatar.propTypes = {
   big: PropTypes.string,
   username: PropTypes.string,
-  src: PropTypes.string
+  src: PropTypes.string,
+  linking: PropTypes.bool
 };
 
 export default Avatar;
