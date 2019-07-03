@@ -323,12 +323,14 @@ export default props => {
                   )}
                 </ToggleSlide>
               )}
-              <SlideIndicator>
-                <Indicator
-                  countArray={props.files}
-                  currentItem={props.currentItem}
-                />
-              </SlideIndicator>
+              {filesLength > 1 && (
+                <SlideIndicator>
+                  <Indicator
+                    countArray={props.files}
+                    currentItem={props.currentItem}
+                  />
+                </SlideIndicator>
+              )}
             </PostFile>
           ))}
       </PostFileColumn>

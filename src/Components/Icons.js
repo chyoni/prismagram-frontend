@@ -45,6 +45,17 @@ export const HeartFull = () => (
   </svg>
 );
 
+export const CommentFull = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+  >
+    <path d="M12 1c-6.628 0-12 4.573-12 10.213 0 2.39.932 4.591 2.427 6.164l-2.427 5.623 7.563-2.26c9.495 2.598 16.437-3.251 16.437-9.527 0-5.64-5.372-10.213-12-10.213z" />
+  </svg>
+);
+
 export const User = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -130,5 +141,16 @@ export const IndicatorCircle = () => (
     viewBox="0 0 24 24"
   >
     <circle cx="12" cy="12" r="12" />
+  </svg>
+);
+
+export const Many = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+  >
+    <path d="M15.602.075c2.201 1.174 4.904 3.254 6.398 5.252-1.286-.9-3.011-1.027-5.058-.549.222-1.469-.185-3.535-1.34-4.703zm-.825 6.925s1.522-7-3.335-7h-5.442v20h16v-10.629c0-3.42-4.214-3.116-7.223-2.371zm-10.777 15v-20h-2v22h18v-2h-16z" />
   </svg>
 );

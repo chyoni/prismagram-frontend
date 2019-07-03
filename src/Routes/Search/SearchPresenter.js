@@ -3,9 +3,11 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import Loader from "../../Components/Loader";
 import UserCard from "../../Components/UserCard";
+import SquarePost from "../../Components/SquarePost";
 
 const SearchWrapper = styled.div`
   width: 100%;
+  height: 100%;
   min-height: 50vh;
   display: flex;
   justify-content: center;
@@ -43,6 +45,7 @@ const SearchPostCard = styled.div`
 `;
 
 const SearchPresenter = ({ searchTerm, loading, data }) => {
+  console.log(data);
   return (
     <SearchWrapper>
       {loading ? <Loader /> : null}
@@ -68,6 +71,7 @@ const SearchPresenter = ({ searchTerm, loading, data }) => {
             </SearchUserCard>
             <SearchPostCard>
               <LabelText>Post</LabelText>
+              <SquarePost postArray={data.searchPost} />
             </SearchPostCard>
           </SearchFoundBox>
         )}
