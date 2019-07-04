@@ -227,7 +227,6 @@ const BottomCommentSection = styled.div`
   min-height: 50px;
   max-height: 80px;
   padding: 0 16px;
-  overflow-y: hidden;
 `;
 
 const BottomCreateTimeSection = styled.div`
@@ -261,8 +260,21 @@ const Textarea = styled(TextareaAutosize)`
   font-size: 14px;
 `;
 
+const MoreComment = styled.span`
+  width: 100%;
+  margin-top: 4px;
+  font-size: 13px;
+  color: ${props => props.theme.lightGreyColor};
+`;
+
 export default props => {
   const filesLength = props.files.length;
+  const smallComment = [];
+  let makeCommentsArray = props.comments;
+  if (props.comments.length > 3) {
+    smallComment.push(makeCommentsArray[0]);
+    makeCommentsArray = smallComment;
+  }
   return (
     <PostWrapper>
       <PostCreatorColumn>
@@ -366,10 +378,19 @@ export default props => {
           </Username>
           <Caption>{props.caption}</Caption>
         </BottomCaptionSection>
-        <BottomCommentSection>
-          <Comments commentsArray={props.comments} />
-          <Comments commentsArray={props.selfComments} />
-        </BottomCommentSection>
+        {props.comments.length > 3 ? (
+          <BottomCommentSection>
+            <Comments commentsArray={makeCommentsArray} />
+            <Link to={`/post/${props.id}`}>
+              <MoreComment>댓글 모두 보기</MoreComment>
+            </Link>
+          </BottomCommentSection>
+        ) : (
+          <BottomCommentSection>
+            <Comments commentsArray={makeCommentsArray} />
+            <Comments commentsArray={props.selfComments} />
+          </BottomCommentSection>
+        )}
         <BottomCreateTimeSection>{props.createdTime}</BottomCreateTimeSection>
         <BottomAddCommentSection>
           <Textarea

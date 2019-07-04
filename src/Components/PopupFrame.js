@@ -6,10 +6,12 @@ import { Link } from "react-router-dom";
 import Avatar from "./Avatar";
 import { gql } from "apollo-boost";
 import FollowButton from "./FollowButton";
-import { useMutation } from "react-apollo-hooks";
+import { useMutation, useQuery } from "react-apollo-hooks";
+import { NOTIFICATION } from "../SharedQueries";
+import Loader from "./Loader";
 
 const PopUpContainer = styled.div`
-  position: absolute;
+  position: fixed;
   z-index: 1500;
   top: 0;
   left: 0;
@@ -23,7 +25,12 @@ const PopUpContainer = styled.div`
 
 const Box = styled.div`
   ${props => props.theme.whiteBox};
-  width: ${props => (props.kind === "FOLLOW" ? "500px" : "400px")};
+  width: ${props =>
+    props.kind === "FOLLOW"
+      ? "500px"
+      : props.kind === "NOTIFICATION"
+      ? "500px"
+      : "400px"};
   border-radius: 20px;
   min-height: 300px;
   max-height: 600px;
@@ -67,6 +74,11 @@ const Main = styled.div`
   display: flex;
   flex-direction: column; /* column 이면 세워지니까 좌우조절을 align-items로 */
   justify-content: center;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const SettingRow = styled.div`
@@ -93,6 +105,12 @@ const UserRow = styled.div`
   margin-bottom: 15px;
   align-items: center;
   justify-content: center;
+`;
+
+const Type = styled.div`
+  width: 100%;
+  display: flex;
+  margin-bottom: 10px;
 `;
 
 const AvatarField = styled.div`
@@ -130,6 +148,46 @@ const ExFollowButton = styled(FollowButton)`
   margin: 0;
 `;
 
+const TypeNameField = styled(NameField)`
+  width: auto;
+`;
+
+const TextField = styled.div`
+  display: flex;
+  margin-left: 15px;
+  align-items: center;
+  width: 250px;
+  min-width: 200px;
+`;
+
+const PostField = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+`;
+
+const TypeButton = styled(PostField)``;
+
+const PostFile = styled.div`
+  width: 30px;
+  height: 30px;
+  background-image: url(${props => props.url});
+  background-position: center;
+  background-size: cover;
+`;
+
+const Text = styled.span`
+  font-size: 12px;
+  color: ${props => props.theme.blackColor};
+`;
+
+const CreatedTime = styled.span`
+  font-size: 11px;
+  color: ${props => props.theme.lightGreyColor};
+  margin-left: 6px;
+`;
+
 const LOG_OUT = gql`
   mutation logUserOut {
     logUserOut @client
@@ -137,13 +195,18 @@ const LOG_OUT = gql`
 `;
 
 const PopUp = ({ togglePopFn, kind, title, data }) => {
+  const seeNotificationQuery = useQuery(NOTIFICATION, {
+    skip: data === undefined || typeof data !== "string",
+    variables: { username: data }
+  });
+  console.log(seeNotificationQuery.data.seeNotification);
   const logOutMutation = useMutation(LOG_OUT);
   const logOutClick = () => {
     togglePopFn();
     logOutMutation();
   };
 
-  const kindEnum = ["FOLLOW", "SETTING", "OPTION"];
+  const kindEnum = ["FOLLOW", "SETTING", "OPTION", "NOTIFICATION"];
   return (
     <PopUpContainer>
       <Box kind={kind}>
@@ -203,6 +266,142 @@ const PopUp = ({ togglePopFn, kind, title, data }) => {
                 <SettingText>Edit Profile</SettingText>
               </SettingRow>
             </>
+          )}
+          {kind === kindEnum[3] && seeNotificationQuery.data.seeNotification ? (
+            // eslint-disable-next-line
+            seeNotificationQuery.data.seeNotification.map(note => {
+              const createdAt = note.createdAt.split("T")[0];
+              if (note.type === "LIKE") {
+                return (
+                  <Type key={note.id}>
+                    <AvatarField>
+                      <Avatar
+                        big={"no"}
+                        src={note.from.avatar}
+                        linking={true}
+                        username={note.from.username}
+                      />
+                    </AvatarField>
+                    <InfoField>
+                      <TypeNameField>
+                        <Name>
+                          <Link
+                            onClick={togglePopFn}
+                            to={`${note.from.username}`}
+                          >
+                            {note.from.username}
+                          </Link>
+                        </Name>
+                      </TypeNameField>
+                      <TextField>
+                        <Text>
+                          님이 좋아합니다
+                          <span role={"img"} aria-label={"이모지"}>
+                            😉
+                          </span>
+                        </Text>
+                        <CreatedTime>{createdAt}</CreatedTime>
+                      </TextField>
+                      <PostField>
+                        <Link
+                          onClick={togglePopFn}
+                          to={`/post/${note.post.id}`}
+                        >
+                          <PostFile url={note.post.files[0].url} />
+                        </Link>
+                      </PostField>
+                    </InfoField>
+                  </Type>
+                );
+              } else if (note.type === "FOLLOW") {
+                return (
+                  <Type key={note.id}>
+                    <AvatarField>
+                      <Avatar
+                        big={"no"}
+                        src={note.from.avatar}
+                        linking={true}
+                        username={note.from.username}
+                      />
+                    </AvatarField>
+                    <InfoField>
+                      <TypeNameField>
+                        <Name>
+                          <Link
+                            onClick={togglePopFn}
+                            to={`${note.from.username}`}
+                          >
+                            {note.from.username}
+                          </Link>
+                        </Name>
+                      </TypeNameField>
+                      <TextField>
+                        <Text>
+                          님이 당신을 팔로우합니다
+                          <span role={"img"} aria-label={"이모지"}>
+                            😘
+                          </span>
+                        </Text>
+                        <CreatedTime>{createdAt}</CreatedTime>
+                      </TextField>
+                    </InfoField>
+                    <TypeButton>
+                      <ExFollowButton
+                        whiteCard={false}
+                        id={note.from.id}
+                        isFollowing={note.from.isFollowing}
+                      />
+                    </TypeButton>
+                  </Type>
+                );
+              } else if (note.type === "COMMENT") {
+                return (
+                  <Type key={note.id}>
+                    <AvatarField>
+                      <Avatar
+                        big={"no"}
+                        src={note.from.avatar}
+                        linking={true}
+                        username={note.from.username}
+                      />
+                    </AvatarField>
+                    <InfoField>
+                      <TypeNameField>
+                        <Name>
+                          <Link
+                            onClick={togglePopFn}
+                            to={`${note.from.username}`}
+                          >
+                            {note.from.username}
+                          </Link>
+                        </Name>
+                      </TypeNameField>
+                      <TextField>
+                        <Text>
+                          님이 댓글을 남겼습니다
+                          <span role={"img"} aria-label={"이모지"}>
+                            😎
+                          </span>
+                        </Text>
+                        <CreatedTime>{createdAt}</CreatedTime>
+                      </TextField>
+                      <PostField>
+                        <Link
+                          onClick={togglePopFn}
+                          to={`/post/${note.post.id}`}
+                        >
+                          <PostFile url={note.post.files[0].url} />
+                        </Link>
+                      </PostField>
+                    </InfoField>
+                  </Type>
+                );
+              }
+            })
+          ) : (
+            <UserRow>
+              <Loader />
+            </UserRow>
           )}
         </Main>
       </Box>

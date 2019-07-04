@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { Logo, Explore, Heart, User } from "./Icons";
@@ -7,6 +7,7 @@ import Input from "./Input";
 import useInput from "../Hooks/useInput";
 import { useQuery } from "react-apollo-hooks";
 import { ME } from "../SharedQueries";
+import PopUp from "./PopupFrame";
 
 const HeaderBox = styled.div`
   z-index: 1000;
@@ -113,6 +114,14 @@ const UserLogo = styled.div`
 `;
 
 const Header = withRouter(({ history, isLoggedIn }) => {
+  const [isOpenNoti, setIsOpenNoti] = useState(false);
+  const toggleNote = () => {
+    if (isOpenNoti) {
+      setIsOpenNoti(false);
+    } else {
+      setIsOpenNoti(true);
+    }
+  };
   const search = useInput("");
   const {
     data: { me }
@@ -124,50 +133,60 @@ const Header = withRouter(({ history, isLoggedIn }) => {
   };
 
   return isLoggedIn ? (
-    <HeaderBox>
-      <HeaderInSide>
-        <LogoLink to={"/"}>
-          <HomeLogoBox>
-            <HomeLogo>
-              <Logo />
-            </HomeLogo>
-            <DivideLine />
-            <Wonstargram>Wonstargram</Wonstargram>
-          </HomeLogoBox>
-        </LogoLink>
-        <SearchBox>
-          <form onSubmit={onSearchSubmit}>
-            <Input
-              value={search.value}
-              onChange={search.onChange}
-              bigSize={false}
-              placeholder={"검색"}
-            />
-          </form>
-        </SearchBox>
-        <EtcLogoBox>
-          <ExploreLogo>
-            <ExploreLink to={"/explore"}>
-              <Explore />
-            </ExploreLink>
-          </ExploreLogo>
-          <HeartLogo>
-            <Heart />
-          </HeartLogo>
-          {!me ? (
-            <UserLogo>
-              <User />
-            </UserLogo>
-          ) : (
-            <UserLogo>
-              <UserLink to={`/${me.username}`}>
+    <>
+      <HeaderBox>
+        <HeaderInSide>
+          <LogoLink to={"/"}>
+            <HomeLogoBox>
+              <HomeLogo>
+                <Logo />
+              </HomeLogo>
+              <DivideLine />
+              <Wonstargram>Wonstargram</Wonstargram>
+            </HomeLogoBox>
+          </LogoLink>
+          <SearchBox>
+            <form onSubmit={onSearchSubmit}>
+              <Input
+                value={search.value}
+                onChange={search.onChange}
+                bigSize={false}
+                placeholder={"검색"}
+              />
+            </form>
+          </SearchBox>
+          <EtcLogoBox>
+            <ExploreLogo>
+              <ExploreLink to={"/explore"}>
+                <Explore />
+              </ExploreLink>
+            </ExploreLogo>
+            <HeartLogo onClick={toggleNote}>
+              <Heart />
+            </HeartLogo>
+            {!me ? (
+              <UserLogo>
                 <User />
-              </UserLink>
-            </UserLogo>
-          )}
-        </EtcLogoBox>
-      </HeaderInSide>
-    </HeaderBox>
+              </UserLogo>
+            ) : (
+              <UserLogo>
+                <UserLink to={`/${me.username}`}>
+                  <User />
+                </UserLink>
+              </UserLogo>
+            )}
+          </EtcLogoBox>
+        </HeaderInSide>
+      </HeaderBox>
+      {isOpenNoti && me && (
+        <PopUp
+          togglePopFn={toggleNote}
+          title={"Notification"}
+          kind={"NOTIFICATION"}
+          data={me.username}
+        />
+      )}
+    </>
   ) : null;
 });
 
