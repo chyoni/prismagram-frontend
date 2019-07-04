@@ -4,7 +4,9 @@ import styled from "styled-components";
 import { X } from "./Icons";
 import { Link } from "react-router-dom";
 import Avatar from "./Avatar";
+import { gql } from "apollo-boost";
 import FollowButton from "./FollowButton";
+import { useMutation } from "react-apollo-hooks";
 
 const PopUpContainer = styled.div`
   position: absolute;
@@ -21,7 +23,7 @@ const PopUpContainer = styled.div`
 
 const Box = styled.div`
   ${props => props.theme.whiteBox};
-  width: 500px;
+  width: ${props => (props.kind === "FOLLOW" ? "500px" : "400px")};
   border-radius: 20px;
   min-height: 300px;
   max-height: 600px;
@@ -61,10 +63,28 @@ const Xbox = styled.div`
 
 const Main = styled.div`
   width: 100%;
-  padding: 10px;
+  padding: ${props => (props.kind === "SETTING" ? "" : "10px")};
   display: flex;
   flex-direction: column; /* column 이면 세워지니까 좌우조절을 align-items로 */
   justify-content: center;
+`;
+
+const SettingRow = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  &:active {
+    background-color: ${props => props.theme.superLightGreyColor};
+  }
+  height: 50px;
+  border-bottom: ${props => props.theme.boxBorder};
+`;
+
+const SettingText = styled.span`
+  font-size: 16px;
+  color: ${props => props.theme.blackColor};
 `;
 
 const UserRow = styled.div`
@@ -110,11 +130,23 @@ const ExFollowButton = styled(FollowButton)`
   margin: 0;
 `;
 
+const LOG_OUT = gql`
+  mutation logUserOut {
+    logUserOut @client
+  }
+`;
+
 const PopUp = ({ togglePopFn, kind, title, data }) => {
+  const logOutMutation = useMutation(LOG_OUT);
+  const logOutClick = () => {
+    togglePopFn();
+    logOutMutation();
+  };
+
   const kindEnum = ["FOLLOW", "SETTING", "OPTION"];
   return (
     <PopUpContainer>
-      <Box>
+      <Box kind={kind}>
         <Header>
           <TitleBox>
             <Title>{title}</Title>
@@ -125,7 +157,7 @@ const PopUp = ({ togglePopFn, kind, title, data }) => {
             </Xbox>
           </CloseBox>
         </Header>
-        <Main>
+        <Main kind={kind}>
           {kind === kindEnum[0] &&
             data.map(user => {
               return (
@@ -162,6 +194,16 @@ const PopUp = ({ togglePopFn, kind, title, data }) => {
                 </UserRow>
               );
             })}
+          {kind === kindEnum[1] && (
+            <>
+              <SettingRow onClick={logOutClick}>
+                <SettingText>Log Out</SettingText>
+              </SettingRow>
+              <SettingRow onClick={() => console.log("Edit")}>
+                <SettingText>Edit Profile</SettingText>
+              </SettingRow>
+            </>
+          )}
         </Main>
       </Box>
     </PopUpContainer>

@@ -82,8 +82,8 @@ export default () => {
             data: { confirmSecret: token }
           } = await confirmSecretMutation();
           if (token !== "" && token !== undefined) {
-            logIn({ variables: { token } });
-            toast.success("로그인 되었습니다😍");
+            await logIn({ variables: { token } });
+            window.location.reload();
           } else {
             throw Error();
           }

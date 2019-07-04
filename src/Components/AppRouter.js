@@ -6,6 +6,7 @@ import Auth from "../Routes/Auth";
 import Explore from "../Routes/Explore";
 import Profile from "../Routes/Profile";
 import Search from "../Routes/Search";
+import DetailPost from "../Routes/DetailPost";
 
 const LoggedInRoutes = () => (
   <Switch>
@@ -13,6 +14,7 @@ const LoggedInRoutes = () => (
     <Route exact path="/explore" component={Explore} />
     <Route exact path="/search" component={Search} />
     <Route exact path="/:username" component={Profile} />
+    <Route exact path="/post/:postId" component={DetailPost} />
   </Switch>
 );
 

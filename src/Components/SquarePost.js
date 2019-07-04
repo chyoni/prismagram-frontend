@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import { HeartFull, CommentFull, Many } from "./Icons";
 
 const GridContainer = styled.div`
@@ -53,6 +54,8 @@ const BookMarkOverlay = styled.div`
 const PostContainer = styled.div`
   position: relative;
   padding-bottom: 100%;
+  width: 281.66px;
+  height: 300px;
   display: flex;
   align-items: stretch;
   flex-shrink: 0;
@@ -103,26 +106,25 @@ const SquarePost = ({ postArray }) => {
 
 const MapToPost = ({ id, commentCount, likeCount, thumbNail, fileLength }) => {
   return (
-    <PostContainer
-      thumbNail={thumbNail}
-      onClick={/*PostDetail Comming Soon*/ null}
-    >
-      {fileLength > 1 && (
-        <BookMarkOverlay>
-          <Many />
-        </BookMarkOverlay>
-      )}
-      <Overlay>
-        <Box>
-          <HeartFull />
-          <Count>{likeCount}</Count>
-        </Box>
-        <Box>
-          <CommentFull />
-          <Count>{commentCount}</Count>
-        </Box>
-      </Overlay>
-    </PostContainer>
+    <Link to={`/post/${id}`}>
+      <PostContainer thumbNail={thumbNail}>
+        {fileLength > 1 && (
+          <BookMarkOverlay>
+            <Many />
+          </BookMarkOverlay>
+        )}
+        <Overlay>
+          <Box>
+            <HeartFull />
+            <Count>{likeCount}</Count>
+          </Box>
+          <Box>
+            <CommentFull />
+            <Count>{commentCount}</Count>
+          </Box>
+        </Overlay>
+      </PostContainer>
+    </Link>
   );
 };
 
