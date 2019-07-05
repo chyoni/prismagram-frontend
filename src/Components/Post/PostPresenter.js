@@ -15,6 +15,7 @@ import {
 } from "../Icons";
 import Comments from "../Comments";
 import Indicator from "../Indicator";
+import PopUp from "../PopupFrame";
 
 const PostWrapper = styled.div`
   display: flex;
@@ -271,6 +272,7 @@ export default props => {
   const filesLength = props.files.length;
   const smallComment = [];
   let makeCommentsArray = props.comments;
+  console.log(props.id);
   if (props.comments.length > 3) {
     smallComment.push(makeCommentsArray[0]);
     makeCommentsArray = smallComment;
@@ -370,7 +372,9 @@ export default props => {
           </BookMarkButton>
         </BottomActionSection>
         <BottomLikeCountSection>
-          <LikeCount>{`좋아요  ${props.likeCountState}개`}</LikeCount>
+          <LikeCount onClick={props.handleIsOpen}>{`좋아요  ${
+            props.likeCountState
+          }개`}</LikeCount>
         </BottomLikeCountSection>
         <BottomCaptionSection>
           <Username>
@@ -401,6 +405,14 @@ export default props => {
           />
         </BottomAddCommentSection>
       </PostBottomColumn>
+      {props.isOpenLikes && (
+        <PopUp
+          title={"Likes"}
+          togglePopFn={props.handleIsOpen}
+          kind={"LIKE"}
+          postId={props.id}
+        />
+      )}
     </PostWrapper>
   );
 };

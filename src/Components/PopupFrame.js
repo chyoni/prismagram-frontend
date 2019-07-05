@@ -9,6 +9,7 @@ import FollowButton from "./FollowButton";
 import { useMutation, useQuery } from "react-apollo-hooks";
 import { NOTIFICATION } from "../SharedQueries";
 import Loader from "./Loader";
+import UserList from "./UserList";
 
 const PopUpContainer = styled.div`
   position: fixed;
@@ -193,20 +194,41 @@ const LOG_OUT = gql`
     logUserOut @client
   }
 `;
+const WHO_LIKES = gql`
+  query whoLike($postId: String!) {
+    whoLike(postId: $postId) {
+      user {
+        id
+        username
+        avatar
+        isSelf
+        isFollowing
+      }
+    }
+  }
+`;
 
-const PopUp = ({ togglePopFn, kind, title, data }) => {
+const PopUp = ({ togglePopFn, kind, title, data, postId }) => {
   const seeNotificationQuery = useQuery(NOTIFICATION, {
     skip: data === undefined || typeof data !== "string",
     variables: { username: data }
   });
-  console.log(seeNotificationQuery);
+
+  const { data: whoLikesData, loading: whoLikesLoading } = useQuery(WHO_LIKES, {
+    skip: postId === undefined,
+    variables: { postId }
+  });
+
+  const likesUserArray = [];
+
+  console.log(whoLikesData, whoLikesLoading);
   const logOutMutation = useMutation(LOG_OUT);
   const logOutClick = () => {
     togglePopFn();
     logOutMutation();
   };
 
-  const kindEnum = ["FOLLOW", "SETTING", "OPTION", "NOTIFICATION"];
+  const kindEnum = ["FOLLOW", "SETTING", "OPTION", "NOTIFICATION", "LIKE"];
   return (
     <PopUpContainer>
       <Box kind={kind}>
@@ -403,6 +425,21 @@ const PopUp = ({ togglePopFn, kind, title, data }) => {
               <UserRow>
                 <Loader />
               </UserRow>
+            )
+          ) : null}
+          {kind === kindEnum[4] ? (
+            whoLikesLoading ? (
+              <UserRow>
+                <Loader />
+              </UserRow>
+            ) : (
+              !whoLikesLoading &&
+              whoLikesData &&
+              whoLikesData.whoLike.forEach(element => {
+                likesUserArray.push(element.user);
+                console.log(likesUserArray);
+                return <UserList users={likesUserArray} />;
+              })
             )
           ) : null}
         </Main>
