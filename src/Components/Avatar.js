@@ -4,8 +4,10 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 
 const Image = styled.img`
-  width: ${props => (props.big === "yes" ? "150px" : "32px")};
-  height: ${props => (props.big === "yes" ? "150px" : "32px")};
+  width: ${props =>
+    props.big === "yes" ? "150px" : props.big === "no" ? "32px" : "45px"};
+  height: ${props =>
+    props.big === "yes" ? "150px" : props.big === "no" ? "32px" : "45px"};
   overflow: hidden;
   border-radius: 50%;
   border: 1px solid ${props => props.theme.lightGreyColor};

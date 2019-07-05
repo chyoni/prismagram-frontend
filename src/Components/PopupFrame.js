@@ -199,7 +199,7 @@ const PopUp = ({ togglePopFn, kind, title, data }) => {
     skip: data === undefined || typeof data !== "string",
     variables: { username: data }
   });
-  console.log(seeNotificationQuery.data.seeNotification);
+  console.log(seeNotificationQuery);
   const logOutMutation = useMutation(LOG_OUT);
   const logOutClick = () => {
     togglePopFn();
@@ -267,142 +267,144 @@ const PopUp = ({ togglePopFn, kind, title, data }) => {
               </SettingRow>
             </>
           )}
-          {kind === kindEnum[3] && seeNotificationQuery.data.seeNotification ? (
-            // eslint-disable-next-line
-            seeNotificationQuery.data.seeNotification.map(note => {
-              const createdAt = note.createdAt.split("T")[0];
-              if (note.type === "LIKE") {
-                return (
-                  <Type key={note.id}>
-                    <AvatarField>
-                      <Avatar
-                        big={"no"}
-                        src={note.from.avatar}
-                        linking={true}
-                        username={note.from.username}
-                      />
-                    </AvatarField>
-                    <InfoField>
-                      <TypeNameField>
-                        <Name>
+          {kind === kindEnum[3] ? (
+            seeNotificationQuery.data.seeNotification ? (
+              // eslint-disable-next-line
+              seeNotificationQuery.data.seeNotification.map(note => {
+                const createdAt = note.createdAt.split("T")[0];
+                if (note.type === "LIKE") {
+                  return (
+                    <Type key={note.id}>
+                      <AvatarField>
+                        <Avatar
+                          big={"no"}
+                          src={note.from.avatar}
+                          linking={true}
+                          username={note.from.username}
+                        />
+                      </AvatarField>
+                      <InfoField>
+                        <TypeNameField>
+                          <Name>
+                            <Link
+                              onClick={togglePopFn}
+                              to={`${note.from.username}`}
+                            >
+                              {note.from.username}
+                            </Link>
+                          </Name>
+                        </TypeNameField>
+                        <TextField>
+                          <Text>
+                            님이 좋아합니다
+                            <span role={"img"} aria-label={"이모지"}>
+                              😉
+                            </span>
+                          </Text>
+                          <CreatedTime>{createdAt}</CreatedTime>
+                        </TextField>
+                        <PostField>
                           <Link
                             onClick={togglePopFn}
-                            to={`${note.from.username}`}
+                            to={`/post/${note.post.id}`}
                           >
-                            {note.from.username}
+                            <PostFile url={note.post.files[0].url} />
                           </Link>
-                        </Name>
-                      </TypeNameField>
-                      <TextField>
-                        <Text>
-                          님이 좋아합니다
-                          <span role={"img"} aria-label={"이모지"}>
-                            😉
-                          </span>
-                        </Text>
-                        <CreatedTime>{createdAt}</CreatedTime>
-                      </TextField>
-                      <PostField>
-                        <Link
-                          onClick={togglePopFn}
-                          to={`/post/${note.post.id}`}
-                        >
-                          <PostFile url={note.post.files[0].url} />
-                        </Link>
-                      </PostField>
-                    </InfoField>
-                  </Type>
-                );
-              } else if (note.type === "FOLLOW") {
-                return (
-                  <Type key={note.id}>
-                    <AvatarField>
-                      <Avatar
-                        big={"no"}
-                        src={note.from.avatar}
-                        linking={true}
-                        username={note.from.username}
-                      />
-                    </AvatarField>
-                    <InfoField>
-                      <TypeNameField>
-                        <Name>
+                        </PostField>
+                      </InfoField>
+                    </Type>
+                  );
+                } else if (note.type === "FOLLOW") {
+                  return (
+                    <Type key={note.id}>
+                      <AvatarField>
+                        <Avatar
+                          big={"no"}
+                          src={note.from.avatar}
+                          linking={true}
+                          username={note.from.username}
+                        />
+                      </AvatarField>
+                      <InfoField>
+                        <TypeNameField>
+                          <Name>
+                            <Link
+                              onClick={togglePopFn}
+                              to={`${note.from.username}`}
+                            >
+                              {note.from.username}
+                            </Link>
+                          </Name>
+                        </TypeNameField>
+                        <TextField>
+                          <Text>
+                            님이 당신을 팔로우합니다
+                            <span role={"img"} aria-label={"이모지"}>
+                              😘
+                            </span>
+                          </Text>
+                          <CreatedTime>{createdAt}</CreatedTime>
+                        </TextField>
+                      </InfoField>
+                      <TypeButton>
+                        <ExFollowButton
+                          whiteCard={false}
+                          id={note.from.id}
+                          isFollowing={note.from.isFollowing}
+                        />
+                      </TypeButton>
+                    </Type>
+                  );
+                } else if (note.type === "COMMENT") {
+                  return (
+                    <Type key={note.id}>
+                      <AvatarField>
+                        <Avatar
+                          big={"no"}
+                          src={note.from.avatar}
+                          linking={true}
+                          username={note.from.username}
+                        />
+                      </AvatarField>
+                      <InfoField>
+                        <TypeNameField>
+                          <Name>
+                            <Link
+                              onClick={togglePopFn}
+                              to={`${note.from.username}`}
+                            >
+                              {note.from.username}
+                            </Link>
+                          </Name>
+                        </TypeNameField>
+                        <TextField>
+                          <Text>
+                            님이 댓글을 남겼습니다
+                            <span role={"img"} aria-label={"이모지"}>
+                              😎
+                            </span>
+                          </Text>
+                          <CreatedTime>{createdAt}</CreatedTime>
+                        </TextField>
+                        <PostField>
                           <Link
                             onClick={togglePopFn}
-                            to={`${note.from.username}`}
+                            to={`/post/${note.post.id}`}
                           >
-                            {note.from.username}
+                            <PostFile url={note.post.files[0].url} />
                           </Link>
-                        </Name>
-                      </TypeNameField>
-                      <TextField>
-                        <Text>
-                          님이 당신을 팔로우합니다
-                          <span role={"img"} aria-label={"이모지"}>
-                            😘
-                          </span>
-                        </Text>
-                        <CreatedTime>{createdAt}</CreatedTime>
-                      </TextField>
-                    </InfoField>
-                    <TypeButton>
-                      <ExFollowButton
-                        whiteCard={false}
-                        id={note.from.id}
-                        isFollowing={note.from.isFollowing}
-                      />
-                    </TypeButton>
-                  </Type>
-                );
-              } else if (note.type === "COMMENT") {
-                return (
-                  <Type key={note.id}>
-                    <AvatarField>
-                      <Avatar
-                        big={"no"}
-                        src={note.from.avatar}
-                        linking={true}
-                        username={note.from.username}
-                      />
-                    </AvatarField>
-                    <InfoField>
-                      <TypeNameField>
-                        <Name>
-                          <Link
-                            onClick={togglePopFn}
-                            to={`${note.from.username}`}
-                          >
-                            {note.from.username}
-                          </Link>
-                        </Name>
-                      </TypeNameField>
-                      <TextField>
-                        <Text>
-                          님이 댓글을 남겼습니다
-                          <span role={"img"} aria-label={"이모지"}>
-                            😎
-                          </span>
-                        </Text>
-                        <CreatedTime>{createdAt}</CreatedTime>
-                      </TextField>
-                      <PostField>
-                        <Link
-                          onClick={togglePopFn}
-                          to={`/post/${note.post.id}`}
-                        >
-                          <PostFile url={note.post.files[0].url} />
-                        </Link>
-                      </PostField>
-                    </InfoField>
-                  </Type>
-                );
-              }
-            })
-          ) : (
-            <UserRow>
-              <Loader />
-            </UserRow>
-          )}
+                        </PostField>
+                      </InfoField>
+                    </Type>
+                  );
+                }
+              })
+            ) : (
+              <UserRow>
+                <Loader />
+              </UserRow>
+            )
+          ) : null}
         </Main>
       </Box>
     </PopUpContainer>

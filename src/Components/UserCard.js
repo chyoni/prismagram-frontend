@@ -8,8 +8,11 @@ import FollowButton from "./FollowButton";
 const GridOrNotContainer = styled.div`
   ${props =>
     props.whiteCard
-      ? "margin-bottom: 50px;display: grid;grid-gap: 25px;grid-template-columns: repeat(4, 1fr);grid-template-rows: 160px;grid-auto-rows: 160px;"
+      ? props.tooMany
+        ? "margin-bottom: 50px;display: grid;grid-gap: 25px;grid-template-columns: repeat(5, 1fr);grid-template-rows: 160px;grid-auto-rows: 160px;"
+        : "margin-bottom: 50px;display: grid;grid-gap: 25px;grid-template-columns: repeat(4, 1fr);grid-template-rows: 160px;grid-auto-rows: 160px;"
       : ""};
+  overflow-x: ${props => (props.tooMany ? "hidden" : "")};
 `;
 
 const Wrapper = styled.div`
@@ -48,8 +51,8 @@ const InfoColumn = styled.div`
 
 const Username = styled.span`
   font-size: ${props => (props.whiteCard ? "14px" : "30px")};
-  font-weight: 500;
-  font-family: "Roboto", sans-serif;
+  font-weight: ${props => (props.whiteCard ? "600" : "500")};
+  font-family: ${props => (props.whiteCard ? "" : "Roboto, sans-serif")};
   color: ${props => props.theme.blackColor};
   margin-bottom: 5px;
 `;
@@ -59,9 +62,9 @@ const Bio = styled.span`
   color: ${props => props.theme.lightGreyColor};
 `;
 
-export default ({ userArray, whiteCard = true }) => {
+export default ({ userArray, whiteCard = true, tooMany = false }) => {
   return (
-    <GridOrNotContainer whiteCard={whiteCard}>
+    <GridOrNotContainer whiteCard={whiteCard} tooMany={tooMany}>
       {userArray.map(user => {
         return (
           <UserCard
