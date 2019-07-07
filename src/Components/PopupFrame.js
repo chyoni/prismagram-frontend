@@ -200,6 +200,8 @@ const WHO_LIKES = gql`
       user {
         id
         username
+        bio
+        fullName
         avatar
         isSelf
         isFollowing
@@ -218,8 +220,6 @@ const PopUp = ({ togglePopFn, kind, title, data, postId }) => {
     skip: postId === undefined,
     variables: { postId }
   });
-
-  const likesUserArray = [];
 
   console.log(whoLikesData, whoLikesLoading);
   const logOutMutation = useMutation(LOG_OUT);
@@ -434,12 +434,9 @@ const PopUp = ({ togglePopFn, kind, title, data, postId }) => {
               </UserRow>
             ) : (
               !whoLikesLoading &&
-              whoLikesData &&
-              whoLikesData.whoLike.forEach(element => {
-                likesUserArray.push(element.user);
-                console.log(likesUserArray);
-                return <UserList users={likesUserArray} />;
-              })
+              whoLikesData && (
+                <UserList users={whoLikesData.whoLike} filtering={true} />
+              )
             )
           ) : null}
         </Main>

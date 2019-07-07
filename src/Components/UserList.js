@@ -43,38 +43,77 @@ const ExFollowButton = styled(FollowButton)`
   width: 60px;
 `;
 
-const UserList = ({ users }) => {
-  return (
-    <>
-      {users.map(user => {
-        return (
-          <Row key={user.id}>
-            <AvatarColumn>
-              <Avatar
-                big={"middle"}
-                src={user.avatar}
-                linking={true}
-                username={user.username}
-              />
-            </AvatarColumn>
-            <InfoColumn>
-              <Username>
-                <Link to={`/${user.username}`}>{user.username}</Link>
-              </Username>
-              <Bio>{user.bio || user.fullName}</Bio>
-            </InfoColumn>
-            <ButtonColumn>
-              <ExFollowButton
-                id={user.id}
-                whiteCard={false}
-                isFollowing={user.isFollowing}
-              />
-            </ButtonColumn>
-          </Row>
-        );
-      })}
-    </>
-  );
+const UserList = ({ users, filtering = false }) => {
+  console.log(users);
+  const filteringArray = [];
+  if (filtering) {
+    users.forEach(async element => await filteringArray.push(element.user));
+    return (
+      <>
+        {filteringArray.map(user => {
+          return (
+            <Row key={user.id}>
+              <AvatarColumn>
+                <Avatar
+                  big={"middle"}
+                  src={user.avatar}
+                  linking={true}
+                  username={user.username}
+                />
+              </AvatarColumn>
+              <InfoColumn>
+                <Username>
+                  <Link to={`/${user.username}`}>{user.username}</Link>
+                </Username>
+                <Bio>{user.bio || user.fullName}</Bio>
+              </InfoColumn>
+              <ButtonColumn>
+                {!user.isSelf && (
+                  <ExFollowButton
+                    id={user.id}
+                    whiteCard={false}
+                    isFollowing={user.isFollowing}
+                  />
+                )}
+              </ButtonColumn>
+            </Row>
+          );
+        })}
+      </>
+    );
+  } else {
+    return (
+      <>
+        {users.map(user => {
+          return (
+            <Row key={user.id}>
+              <AvatarColumn>
+                <Avatar
+                  big={"middle"}
+                  src={user.avatar}
+                  linking={true}
+                  username={user.username}
+                />
+              </AvatarColumn>
+              <InfoColumn>
+                <Username>
+                  <Link to={`/${user.username}`}>{user.username}</Link>
+                </Username>
+                <Bio>{user.bio || user.fullName}</Bio>
+              </InfoColumn>
+              <ButtonColumn>
+                <ExFollowButton
+                  id={user.id}
+                  whiteCard={false}
+                  isFollowing={user.isFollowing}
+                />
+              </ButtonColumn>
+            </Row>
+          );
+        })}
+      </>
+    );
+  }
 };
 
 export default UserList;

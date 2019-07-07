@@ -15,6 +15,7 @@ import {
 } from "../../Components/Icons";
 import TextareaAutosize from "react-autosize-textarea";
 import Indicator from "../../Components/Indicator";
+import PopUp from "../../Components/PopupFrame";
 
 const Wrapper = styled.div`
   display: flex;
@@ -263,7 +264,9 @@ const DetailPostPresenter = ({
   onKeyDown,
   selfComments,
   isLikedState,
-  likeCountState
+  likeCountState,
+  handleIsOpen,
+  isOpenLikes
 }) => {
   console.log(post);
   const filesLength = post.files.length;
@@ -382,7 +385,7 @@ const DetailPostPresenter = ({
               </BookMarkButton>
             </BottomActionSection>
             <BottomLikeCountSection>
-              <LikeCount>
+              <LikeCount onClick={handleIsOpen}>
                 {`좋아요 `}
                 <Count>{likeCountState}</Count>
                 {`개`}
@@ -402,6 +405,14 @@ const DetailPostPresenter = ({
           </MetaAddComment>
         </MetaContainer>
       </PostBox>
+      {isOpenLikes && (
+        <PopUp
+          title={"Likes"}
+          togglePopFn={handleIsOpen}
+          kind={"LIKE"}
+          postId={post.id}
+        />
+      )}
     </Wrapper>
   );
 };

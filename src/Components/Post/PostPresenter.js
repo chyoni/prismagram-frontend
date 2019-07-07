@@ -272,7 +272,6 @@ export default props => {
   const filesLength = props.files.length;
   const smallComment = [];
   let makeCommentsArray = props.comments;
-  console.log(props.id);
   if (props.comments.length > 3) {
     smallComment.push(makeCommentsArray[0]);
     makeCommentsArray = smallComment;

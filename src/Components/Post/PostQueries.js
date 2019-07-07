@@ -19,16 +19,4 @@ export const ADD_COMMENT = gql`
   }
 `;
 
-export const WHO_LIKES = gql`
-  query whoLikes($postId: String!) {
-    whoLikes(postId: $postId) {
-      user {
-        id
-        username
-        avatar
-        isSelf
-        isFollowing
-      }
-    }
-  }
-`;
+

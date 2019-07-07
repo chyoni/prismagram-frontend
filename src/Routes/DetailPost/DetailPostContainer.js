@@ -11,6 +11,7 @@ const DetailPostContainer = ({ post }) => {
   const [isLikedState, setIsLiked] = useState(post.isLiked);
   const [likeCountState, setLikeCount] = useState(post.likeCount);
   const [selfComments, setSelfComments] = useState([]);
+  const [isOpenLikes, setIsOpenLikes] = useState(false);
   const comment = useInput("");
   const toggleLikeMutation = useMutation(TOGGLE_LIKE, {
     variables: { postId: post.id }
@@ -18,6 +19,13 @@ const DetailPostContainer = ({ post }) => {
   const addCommentMutation = useMutation(ADD_COMMENT, {
     variables: { postId: post.id, text: comment.value }
   });
+  const handleIsOpen = () => {
+    if (isOpenLikes) {
+      setIsOpenLikes(false);
+    } else {
+      setIsOpenLikes(true);
+    }
+  };
 
   const toggleLike = () => {
     if (isLikedState === true) {
@@ -61,6 +69,8 @@ const DetailPostContainer = ({ post }) => {
       setCurrentItem={setCurrentItem}
       onKeyDown={onKeyDown}
       selfComments={selfComments}
+      isOpenLikes={isOpenLikes}
+      handleIsOpen={handleIsOpen}
     />
   );
 };
